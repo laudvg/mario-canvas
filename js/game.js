@@ -5,6 +5,9 @@ const Game = {
   height: undefined,
   fps: 60,
   framesCounter: 0,
+  playerKeys: {
+    TOP_KEY: 38
+  },
 
   init: function() {
     this.canvas = document.getElementById('canvas');
@@ -34,7 +37,7 @@ const Game = {
 
   reset: function() {
     this.background = new Background(this.ctx, this.width, this.height);
-    this.player = new Player(this.ctx, 50, 150, 'img/player.png', this.height);
+    this.player = new Player(this.ctx, 50, 150, 'img/player.png', this.height, this.playerKeys);
     this.obstacles = []
   },
 
@@ -50,6 +53,7 @@ const Game = {
 
   moveAll: function() {
     this.background.move()
+    this.player.move()
     this.obstacles.forEach(obstacle => obstacle.move())
   },
 
