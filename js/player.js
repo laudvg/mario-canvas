@@ -1,5 +1,5 @@
 class Player {
-  constructor(ctx, width, height, image, gameHeight, keys) {
+  constructor(ctx, width, height, image, gameWidth, gameHeight, keys) {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
@@ -12,11 +12,13 @@ class Player {
     this.posY0 = gameHeight * 0.98 - this.height ;
     this.vy = 1;
     this.gravity = 0.4;
+    this.gameWidth = gameWidth;
 
     this.frames = 3;
     this.framesIndex = 0;
 
     this.keys = keys;
+    this.bullets = [];
     this.setListeners()
   }
 
@@ -32,7 +34,9 @@ class Player {
       this.width, 
       this.height
       )
-
+      console.log(this.bullets.length)
+      this.clearBullets()
+      this.bullets.forEach(bullet => bullet.draw())
       this.animate(framesCounter)
   }
 
@@ -44,6 +48,7 @@ class Player {
       this.vy = 1;
       this.posY = this.posY0;
     }
+    this.bullets.forEach(bullet => bullet.move())
   }
 
   animate(framesCounter) {
@@ -63,7 +68,17 @@ class Player {
             this.vy -= 10;
           }
           break;
+        case this.keys.SPACE:
+          this.shoot()
       }
     })
+  }
+
+  shoot() {
+    this.bullets.push(new Bullet(this.ctx, 10, this.posX, this.posY, this.width, this.height, this.posY0))
+  }
+
+  clearBullets() {
+    this.bullets = this.bullets.filter(bullet => bullet.posX <= this.gameWidth)
   }
 }

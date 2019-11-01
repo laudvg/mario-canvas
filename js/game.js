@@ -6,8 +6,10 @@ const Game = {
   fps: 60,
   framesCounter: 0,
   playerKeys: {
-    TOP_KEY: 38
+    TOP_KEY: 38,
+    SPACE: 32
   },
+  score: 0,
 
   init: function() {
     this.canvas = document.getElementById('canvas');
@@ -29,7 +31,9 @@ const Game = {
       this.drawAll();
       this.moveAll();
 
+      this.clearObstacles()
       if(this.framesCounter % 70 === 0) this.generateObstacles()
+      if(this.framesCounter % 100 === 0) this.score++;
       if(this.isCollision()) this.gameOver()
       if(this.framesCounter > 1000) this.framesCounter = 0;
     }, 1000/this.fps)
@@ -37,8 +41,9 @@ const Game = {
 
   reset: function() {
     this.background = new Background(this.ctx, this.width, this.height);
-    this.player = new Player(this.ctx, 50, 150, 'img/player.png', this.height, this.playerKeys);
-    this.obstacles = []
+    this.player = new Player(this.ctx, 50, 150, 'img/player.png', this.width,this.height, this.playerKeys);
+    this.obstacles = [];
+    ScoreBoard.init(this.ctx, this.score)
   },
 
   clear: function() {
@@ -49,6 +54,7 @@ const Game = {
     this.background.draw();
     this.player.draw(this.framesCounter);
     this.obstacles.forEach(obstacle => obstacle.draw())
+    ScoreBoard.draw(this.score)
   },
 
   moveAll: function() {
@@ -69,6 +75,9 @@ const Game = {
     // colisiones genéricas
     // (p.x + p.w > o.x && o.x + o.w > p.x && p.y + p.h > o.y && o.y + o.h > p.y )
     return this.obstacles.some(obs => (this.player.posX + this.player.width > obs.posX && obs.posX + obs.width > this.player.posX && this.player.posY + this.player.height > obs.posY && obs.posY + obs.height > this.player.posY ))
+  },
 
+  clearObstacles: function() {
+    this.obstacles = this.obstacles.filter(obstacle => (obstacle.posX >= 0))
   }
 }
