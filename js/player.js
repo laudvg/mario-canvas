@@ -34,7 +34,6 @@ class Player {
       this.width, 
       this.height
       )
-      console.log(this.bullets.length)
       this.clearBullets()
       this.bullets.forEach(bullet => bullet.draw())
       this.animate(framesCounter)
