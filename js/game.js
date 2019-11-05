@@ -32,9 +32,9 @@ const Game = {
       this.moveAll();
 
       this.clearObstacles()
-      if(this.framesCounter % 70 === 0) this.generateObstacles()
+      if(this.framesCounter % 70 === 0) this.generateObstacles();
       if(this.framesCounter % 100 === 0) this.score++;
-      if(this.isCollision()) this.gameOver()
+      if(this.isCollision()) this.gameOver();
       if(this.framesCounter > 1000) this.framesCounter = 0;
     }, 1000/this.fps)
   },
@@ -43,24 +43,24 @@ const Game = {
     this.background = new Background(this.ctx, this.width, this.height);
     this.player = new Player(this.ctx, 50, 150, 'img/player.png', this.width,this.height, this.playerKeys);
     this.obstacles = [];
-    ScoreBoard.init(this.ctx, this.score)
+    ScoreBoard.init(this.ctx, this.score);
   },
 
   clear: function() {
-    this.ctx.clearRect(0, 0, this.width, this.height)
+    this.ctx.clearRect(0, 0, this.width, this.height);
   },
 
   drawAll: function() {
     this.background.draw();
     this.player.draw(this.framesCounter);
-    this.obstacles.forEach(obstacle => obstacle.draw())
+    this.obstacles.forEach(obstacle => obstacle.draw());
     ScoreBoard.draw(this.score)
   },
 
   moveAll: function() {
-    this.background.move()
-    this.player.move()
-    this.obstacles.forEach(obstacle => obstacle.move())
+    this.background.move();
+    this.player.move();
+    this.obstacles.forEach(obstacle => obstacle.move());
   },
 
   generateObstacles: function() {
@@ -68,7 +68,7 @@ const Game = {
   },
 
   gameOver: function() {
-    clearInterval(this.interval)
+    clearInterval(this.interval);
   },
 
   isCollision: function() {
@@ -78,6 +78,6 @@ const Game = {
   },
 
   clearObstacles: function() {
-    this.obstacles = this.obstacles.filter(obstacle => (obstacle.posX >= 0))
+    this.obstacles = this.obstacles.filter(obstacle => (obstacle.posX >= 0));
   }
 }
